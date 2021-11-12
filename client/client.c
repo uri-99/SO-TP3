@@ -1,5 +1,4 @@
 #include "includes/client.h"
-#include "socket.c"
 #include <sys/socket.h>
 #include <stdio.h>
 
