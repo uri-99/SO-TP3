@@ -1,8 +1,6 @@
 #include "includes/client.h"
-#include <sys/socket.h>
-#include <stdio.h>
 
-#define PORT 8080
+
 
 
 int main()
@@ -11,13 +9,12 @@ int main()
     struct sockaddr_in server_address;
     int sock;
 
-    if ((sock = socket(AF_INET, SOCK_STEAM, 0)) < 0)
-    {
+    if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0){
         printf("\n Socket creation error \n");
         return -1;
     }
     server_address.sin_family = AF_INET;
-    server_address.sin_port = htons(PORT);:
+    server_address.sin_port = htons(PORT);
 
 
     if(inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr)<=0) 
@@ -32,7 +29,7 @@ int main()
         return -1;
     }
     //connection made
-    char* hello = "hi i just connected"
+    char* hello = "hi i just connected";
     send(sock , hello , strlen(hello) , 0);
     printf("Hello message sent\n");
     return 0;
