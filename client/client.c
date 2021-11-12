@@ -1,8 +1,4 @@
-#include "includes/client.h"
-#include <sys/socket.h>
-#include <stdio.h>
-
-#define PORT 8080
+#include "client.h"
 
 
 int main()
@@ -10,17 +6,18 @@ int main()
     //crear socket, despues connect
     struct sockaddr_in server_address;
     int sock;
+    char buffer[150] = {0};
 
-    if ((sock = socket(AF_INET, SOCK_STEAM, 0)) < 0)
+    if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0)
     {
         printf("\n Socket creation error \n");
         return -1;
     }
     server_address.sin_family = AF_INET;
-    server_address.sin_port = htons(PORT);:
+    server_address.sin_port = htons(PORT);
 
-
-    if(inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr)<=0) 
+    // Convert IPv4 and IPv6 addresses from text to binary form
+    if(inet_pton(AF_INET, "127.0.0.1", &server_address.sin_addr)<=0) 
     {
         printf("\nInvalid address/ Address not supported \n");
         return -1;
@@ -32,9 +29,16 @@ int main()
         return -1;
     }
     //connection made
-    char* hello = "hi i just connected"
+
+    char* hello = "hi i just connected";
     send(sock , hello , strlen(hello) , 0);
     printf("Hello message sent\n");
+
+    //getchar
+    while(1){
+        scanf("%s", buffer);
+        send(sock, buffer, strlen(buffer), 0);
+    }
     return 0;
 }
    

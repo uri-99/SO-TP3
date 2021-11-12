@@ -1,4 +1,4 @@
-#include "includes/server.h"
+#include "server.h"
 
 #define PORT 8080
 
@@ -16,15 +16,17 @@ int main(int argc, char *argv[])
     int current_challenge = 0;
     int TOTAL_CHALLENGES = 12;
 
-    int socket_dec = socket(AF_INET, SOCK_STREAM, 0); //returns descriptor, ipv4, TCP
+    server_fd = socket(AF_INET, SOCK_STREAM, 0); //returns descriptor, ipv4, TCP
     //acá van mas cosas, bind listen accept, seguro vamos a tener que hacer una funcion createServer() que haga todo
-    if (socket_desc == -1)	{
-		printf("Error creating socket");
+    if (server_fd == -1)	{
+        perror("socket failed");
+        exit(EXIT_FAILURE);
 	}
 
     if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt)))
     {
-        printf("setsockopt error");
+        perror("setsockopt");
+        exit(EXIT_FAILURE);
     }
 
     self_address.sin_family = AF_INET;
@@ -32,26 +34,34 @@ int main(int argc, char *argv[])
     self_address.sin_port = htons( PORT );
 
     // Forcefully attaching socket to the port 8080
-    if (bind(server_fd, (struct sockaddr *)&self_address, 
-                                 sizeof(self_address))<0)
+    if (bind(server_fd, (struct sockaddr *)&self_address, sizeof(self_address))<0)
     {
-        printf("bind error");
+        perror("bind failed");
+        exit(EXIT_FAILURE);
     }
     if (listen(server_fd, 3) < 0)
     {
-        printf("listen error")
+        perror("listen");
+        exit(EXIT_FAILURE);
     }
     if ((client_socket = accept(server_fd, (struct sockaddr *)&self_address, 
                        (socklen_t*)&self_address_len))<0)
     {
-        printf("accept error")
+        printf("accept error");
     }
 
     //accepted
-    valread = read( client_socket , buffer, 150);
+    int valread = read( client_socket , buffer, 150);
     printf("%s\n",buffer);
 
     while(current_challenge < TOTAL_CHALLENGES){
+        for(int i=0; i<150; i++){
+            buffer[i] = 0;
+        }
+        int valread = read( client_socket , buffer, 150);
+        if(valread > 0){
+            printf("%s\n",buffer);
+        }
         //recieve and validate answer
     }
 
