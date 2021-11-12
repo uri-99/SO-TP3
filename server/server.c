@@ -1,4 +1,4 @@
-#include "includes/server.h"
+#include "server.h"
 
 
 int main(int argc, char *argv[]){
@@ -14,39 +14,52 @@ int main(int argc, char *argv[]){
   int current_challenge = 0;
   int TOTAL_CHALLENGES = 12;
 
-  int socket_desc = socket(AF_INET, SOCK_STREAM, 0); //returns descriptor, ipv4, TCP
-  //acá van mas cosas, bind listen accept, seguro vamos a tener que hacer una funcion createServer() que haga todo
-  if (socket_desc == -1){
-		printf("Error creating socket");
+    server_fd = socket(AF_INET, SOCK_STREAM, 0); //returns descriptor, ipv4, TCP
+    //acá van mas cosas, bind listen accept, seguro vamos a tener que hacer una funcion createServer() que haga todo
+    if (server_fd == -1)	{
+        perror("socket failed");
+        exit(EXIT_FAILURE);
 	}
 
-  if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt))){
-    printf("setsockopt error");
-  }
+    if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt)))
+    {
+        perror("setsockopt");
+        exit(EXIT_FAILURE);
+    }
 
-  self_address.sin_family = AF_INET;
-  self_address.sin_addr.s_addr = INADDR_ANY;
-  self_address.sin_port = htons( PORT );
+    self_address.sin_family = AF_INET;
+    self_address.sin_addr.s_addr = INADDR_ANY;
+    self_address.sin_port = htons( PORT );
 
-  // Forcefully attaching socket to the port 8080
-  if (bind(server_fd, (struct sockaddr *)&self_address,sizeof(self_address))<0){
-    printf("bind error");
-    exit(ERROR);
-  }
-  if (listen(server_fd, 3) < 0){
-    printf("listen error");
-    exit(ERROR);
-  }
-  if ((client_socket = accept(server_fd, (struct sockaddr *)&self_address,(socklen_t*)&self_address_len))<0){
-    printf("accept error");
-    exit(ERROR);
-  }
+    // Forcefully attaching socket to the port 8080
+    if (bind(server_fd, (struct sockaddr *)&self_address, sizeof(self_address))<0)
+    {
+        perror("bind failed");
+        exit(EXIT_FAILURE);
+    }
+    if (listen(server_fd, 3) < 0)
+    {
+        perror("listen");
+        exit(EXIT_FAILURE);
+    }
+    if ((client_socket = accept(server_fd, (struct sockaddr *)&self_address,
+                       (socklen_t*)&self_address_len))<0)
+    {
+        printf("accept error");
+    }
 
     //accepted
-    ssize_t valread = read( client_socket , buffer, 150);
+    int valread = read( client_socket , buffer, 150);
     printf("%s\n",buffer);
 
     while(current_challenge < TOTAL_CHALLENGES){
+        for(int i=0; i<150; i++){
+            buffer[i] = 0;
+        }
+        int valread = read( client_socket , buffer, 150);
+        if(valread > 0){
+            printf("%s\n",buffer);
+        }
         //recieve and validate answer
     }
 
