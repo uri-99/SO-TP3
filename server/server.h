@@ -1,7 +1,9 @@
-#include <unistd.h>
-#include <stdio.h>
-#include <sys/socket.h>
+#include "../lib.h"
+
 #include <stdlib.h>
 #include <netinet/in.h>
-#include <string.h>
-#define PORT 8080
+
+#define TOTAL_CHALLENGES 4
+
+int challenge(char* assignment, char* answer, int socket);
+
