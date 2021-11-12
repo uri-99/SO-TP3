@@ -1,20 +1,18 @@
 #include "server.h"
 
-#define PORT 8080
 
-int main(int argc, char *argv[])
-{
-    struct sockaddr_in self_address; //tiene family, port, addr, zero[8]
-    struct sockaddr_in client;
+int main(int argc, char *argv[]){
+  struct sockaddr_in self_address; //tiene family, port, addr, zero[8]
+  struct sockaddr_in client;
 
-    int server_fd, client_socket;
-    int opt = 1;
-    int self_address_len = sizeof(self_address);
+  int server_fd, client_socket;
+  int opt = 1;
+  int self_address_len = sizeof(self_address);
 
-    char message_to_client[150] = {0};
-    char buffer[150] = {0};
-    int current_challenge = 0;
-    int TOTAL_CHALLENGES = 12;
+  char message_to_client[150] = {0};
+  char buffer[150] = {0};
+  int current_challenge = 0;
+  int TOTAL_CHALLENGES = 12;
 
     server_fd = socket(AF_INET, SOCK_STREAM, 0); //returns descriptor, ipv4, TCP
     //acá van mas cosas, bind listen accept, seguro vamos a tener que hacer una funcion createServer() que haga todo
@@ -44,7 +42,7 @@ int main(int argc, char *argv[])
         perror("listen");
         exit(EXIT_FAILURE);
     }
-    if ((client_socket = accept(server_fd, (struct sockaddr *)&self_address, 
+    if ((client_socket = accept(server_fd, (struct sockaddr *)&self_address,
                        (socklen_t*)&self_address_len))<0)
     {
         printf("accept error");
