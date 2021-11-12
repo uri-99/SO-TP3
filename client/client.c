@@ -3,10 +3,11 @@
 
 int main()
 {
+    system("clear");  
     //crear socket, despues connect
     struct sockaddr_in server_address;
     int sock;
-    char buffer[150] = {0};
+    char buffer[BUFFER_SIZE] = {0};
 
     if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0){
         printf("\n Socket creation error \n");
@@ -28,10 +29,6 @@ int main()
         return -1;
     }
     //connection made
-
-    char* hello = "hi i just connected";
-    send(sock , hello , strlen(hello) , 0);
-    printf("Hello message sent\n");
 
     //getchar
     while(1){

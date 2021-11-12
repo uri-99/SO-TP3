@@ -1,7 +1,7 @@
 #include "server.h"
 
-
 int main(int argc, char *argv[]){
+  system("clear");  
   struct sockaddr_in self_address; //tiene family, port, addr, zero[8]
   struct sockaddr_in client;
 
@@ -9,10 +9,16 @@ int main(int argc, char *argv[]){
   int opt = 1;
   int self_address_len = sizeof(self_address);
 
-  char message_to_client[150] = {0};
-  char buffer[150] = {0};
+  char assignment[TOTAL_CHALLENGES][BUFFER_SIZE] = 
+  { "Veo que llegaste hasta aqui nene pícaro, para comenzar dar en entendido",
+    "Segundo desafio",
+    "Tercer desafio",
+    "Cuarto desafio"};
+  char answer[TOTAL_CHALLENGES][BUFFER_SIZE] = {"entendido", "itba", "rta3", "rta4"};
+
+  char message_to_client[BUFFER_SIZE] = {0};
+  char buffer[BUFFER_SIZE] = {0};
   int current_challenge = 0;
-  int TOTAL_CHALLENGES = 12;
 
     server_fd = socket(AF_INET, SOCK_STREAM, 0); //returns descriptor, ipv4, TCP
     //acá van mas cosas, bind listen accept, seguro vamos a tener que hacer una funcion createServer() que haga todo
@@ -47,21 +53,43 @@ int main(int argc, char *argv[]){
     {
         printf("accept error");
     }
-
     //accepted
-    int valread = read( client_socket , buffer, 150);
-    printf("%s\n",buffer);
+    //printf("Veo que llegaste hasta aqui nene pícaro, para comenzar dar en entendido");
 
-    while(current_challenge < TOTAL_CHALLENGES){
-        for(int i=0; i<150; i++){
-            buffer[i] = 0;
-        }
-        int valread = read( client_socket , buffer, 150);
-        if(valread > 0){
-            printf("%s\n",buffer);
-        }
-        //recieve and validate answer
+
+    int completed = 0;
+    while (current_challenge < TOTAL_CHALLENGES) {//run challenges
+
+        challenge(assignment[current_challenge], answer[current_challenge], client_socket);
+        current_challenge++;
+             
     }
-
+    
+    system("clear");
+    printf("FELICITACIONES\n\n");
+    
     return 0;
+}
+
+int challenge(char * assignment, char* answer, int client_socket) {
+    
+    system("clear");
+    printf("%s\n\n", assignment);
+
+    while(1) {
+        char buffer[BUFFER_SIZE] = {0};
+        int valread = read(client_socket, buffer, BUFFER_SIZE);
+        if (valread > 0) {
+            buffer[valread] = '\0';
+
+            if(strcmp(buffer, answer) == 0) {
+                printf("\n\n");
+                return 1;
+            } else {
+                system("clear");
+                printf("%s\n\n", assignment);
+                printf("Respuesta incorrecta: %s\n", buffer);
+            }
+        }
+    }    
 }
