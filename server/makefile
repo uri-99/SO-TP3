@@ -13,7 +13,7 @@ $(SERVER_OUT) : $(OBJECTS) -lm
 
 
 %.o: %.c
-	$(GCC) $(GCCFLAGS) -I./include -c $< -o $@ 
+	$(GCC) $(GCCFLAGS) -c $< -o $@ 
 	mkdir -p bin
 
 bin_move:

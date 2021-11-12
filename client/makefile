@@ -13,7 +13,7 @@ $(CLIENT_OUT) : $(OBJECTS)
 
 
 %.o: %.c
-	$(GCC) $(GCCFLAGS) -I./includes -c $< -o $@
+	$(GCC) $(GCCFLAGS) -c $< -o $@
 	mkdir -p bin
 
 bin_move:
