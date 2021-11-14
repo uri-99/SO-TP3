@@ -291,8 +291,21 @@ void challenge10() {
     }
 }
 
-void challenge11() {
+int gdbme()
+{
+    return 0;
+}
 
+void challenge11()
+{
+    if (gdbme() != 0x12346578) // Deberia cambiarse el valor de retorno usando el gdb!
+    {
+        puts("Introduzca cualquier tecla y ENTER para reintentar\n");
+    }
+    else
+    {
+        puts("La respuesta es gdb_rules\n");
+    }
 }
 
 double drand() /* uniform distribution, (0..1] */
