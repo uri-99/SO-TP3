@@ -1,12 +1,14 @@
 #include "server.h"
 
+
+
   char assignment[TOTAL_CHALLENGES][BUFFER_SIZE] = 
   { "Veo que llegaste hasta aqui nene pícaro, la primer respuesta es 'entendido'",
     "The Wire S1E5\n5295 888 6288",
     "https://ibb.co/tc0Hb6w",
     "EBADF",
     "strings: NUMERO",
-    ".data .bss .comment ? .shstrtab .symtab .strtab\n",
+    ".init .plt .text ? .fini .rodata .eh_frame_hdr\n",
     "Filter error",
     "¿?\n\n",
     "Latexme\nSi\n\\mathrm{d}y = u^v{\\cdot}(v'{\\cdot}\\ln{(u)}+v{\\cdot}\\frac{u'}{u})\nentonces\n y=\n",
@@ -122,27 +124,12 @@ void doNothing() {
 void challenge4() {
     write(WRITE_EBADF, "La respuesta es: fk3wfLCm3QvS\n", strlen("La respuesta es: fk3wfLCm3QvS\n"));
 }
-void challenge6() {
-    pid_t pid = getpid();
-    char buffer6[BUFFER_SIZE] = {0};
-    sprintf(buffer6, "cat /proc/%d/status | grep \"TracerPid\" > killP.txt ", pid);
-    system(buffer6);
-    FILE *killFile;
-    killFile = fopen("killP.txt", "r");
 
-    if (killFile != NULL)
-    {
-        int pidTracer = -1;
-        fscanf(killFile, "TracerPid:\t%d", &pidTracer);
-        if (pidTracer >0)
-        { // Si leyo un numero
-            char bufferKill[30] = {0};
-            sprintf(bufferKill, "kill %d", pidTracer);
-            system(bufferKill);
-            //kill(pidTracer, 0);
-        }
-    }
-    system("rm -f killP.txt");
+
+void challenge6(void) __attribute__((section(".RUN_ME")));
+
+void challenge6() {
+    return "this is an easter egg";
 }
 
 void challenge7() {
