@@ -7,7 +7,7 @@
     "The Wire S1E5\n5295 888 6288",
     "https://ibb.co/tc0Hb6w",
     "EBADF",
-    "strings: NUMERO",
+    "strings: too...",
     ".init .plt .text ? .fini .rodata .eh_frame_hdr\n",
     "Filter error",
     "¿?\n\n",
@@ -15,7 +15,21 @@
     "",
     "gdb me to fin the magic number",
     "Me conoces"};
-  char answer[TOTAL_CHALLENGES][BUFFER_SIZE] = {"e", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k"};
+  char answer[TOTAL_CHALLENGES][BUFFER_SIZE] = {"entendido", "itba", "M4GFKZ289aku", "fk3wfLCm3QvS", "too_easy", ".RUN_ME", "K5n2UFfpFMUN", "BUmyYq5XxXGt", "u^v", "chin_chu_lan_cha", "gdb_rules", "normal"};
+
+  char question[TOTAL_CHALLENGES][BUFFER_SIZE] = 
+  { "¿Cómo descubrieron el protocolo, la dirección y el puerto para conectarse?",
+    "¿Qué diferencias hay entre TCP y UDP?",
+    "¿El puerto que usaron para conectarse al server es el mismo que usan para mandar las respuestas? ¿Por qué?",
+    "¿Qué útil abstracción es utilizada para comunicarse con sockets? ¿se puede utilizar read(2) y write(2) para operar?",
+    "¿Cómo garantiza TCP que los paquetes llegan en orden y no se pierden?",
+    "Un servidor suele crear un nuevo proceso o thread para atender las conextiones entrantes. ¿Qué conviene más?",
+    "¿Cómo se puede implementar un servidor que atienda muchas conexiones sin usar procesos ni threads?",
+    "¿Qué aplicaciones se pueden utilizar para ver el tráfico por la red?",
+    "Sockets es un mecanismo de IPC. ¿?Qué es más eficiente entre sockets y pipes?",
+    "¿Cuáles son las características del protocolo SCTP?",
+    "¿Qué es un RFC?",
+    "¿Fue divertido?"};
 
   functiontype functions[TOTAL_CHALLENGES] = {  &doNothing, //1
                                                 &doNothing, //2
@@ -34,7 +48,6 @@
 int main(int argc, char *argv[]){
   system("clear");  
   struct sockaddr_in self_address; //tiene family, port, addr, zero[8]
-  struct sockaddr_in client;
 
   int server_fd, client_socket;
   int opt = 1;
@@ -95,6 +108,8 @@ int challenge(int current_challenge, int client_socket) {
     
     system("clear");
     printf("%s\n\n", assignment[current_challenge]);
+    
+    printf("%s\n\n", question[current_challenge]);
 
     functions[current_challenge]();
 
@@ -103,8 +118,6 @@ int challenge(int current_challenge, int client_socket) {
         int valread = read(client_socket, buffer, BUFFER_SIZE);
         if (valread > 0) {
             buffer[valread] = '\0';
-
-            
 
             if(strcmp(buffer, answer[current_challenge]) == 0) {
                 printf("\n\n");
@@ -129,7 +142,7 @@ void challenge4() {
 void challenge6(void) __attribute__((section(".RUN_ME")));
 
 void challenge6() {
-    return "this is an easter egg";
+    return;
 }
 
 void challenge7() {
